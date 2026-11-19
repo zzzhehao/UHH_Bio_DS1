@@ -1,0 +1,88 @@
+---
+title: "RStudio"
+author: "Zhehao Hu"
+date: "2026-11-19"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: "Inhalt"
+    code-fold: false
+    code-tools: true
+    df-print: paged
+    embed-resources: true
+execute:
+  echo: true
+  warning: true
+  message: true
+---
+
+```{r setup, include=FALSE}
+# knitr- und rmarkdown-Optionen festlegen:
+# Hinweis: Quarto nutzt standardmäßig knitr zum Ausführen der R-Chunks.
+# Falls Sie klassisch mit rmarkdown::render() arbeiten, werden diese Optionen ebenfalls beachtet.
+# knitr::opts_chunk$set(
+#   echo = TRUE,       # R-Code im gerenderten Dokument anzeigen
+#   results = "markup",# Standard-Konsolenausgabe anzeigen
+#   comment = "#>"     # Präfix vor ausgegebenen Ergebnissen im Dokument
+# )
+```
+
+::: {.callout-note collapse="true"} 
+## Lizenzhinweis
+Dieses Programm ist freie Software und kann unter den Bedingungen der GNU General Public License weitergegeben und/oder modifiziert werden.
+:::
+
+
+## RStudio
+
+Hier ein paar wichtige Punkte zu RStudio:
+
+* **RStudio** ist ein Programm, das _lokal_ läuft und mit dem wir mit dem _lokalen_ R arbeiten können. 
+* **RStudio Pro**, **R Workbench**, **Posit Workbench** sind Programme, die _auf einem Server_ laufen und mit denen wir mit dem _Server_ R arbeiten können.
+* Es unterscheidet sich hauptsächlich bei Paketinstallationen und wie man auf die Dateien zugreifen kann. 
+
+### Wie öffne ich das Übungsskript in RStudio? 
+
+Dateien, deren Name mit `.R` als Erweiterung endet, sind R-Skripte. Diese können wir auf verschiedenen Wegen öffnen:
+
+**Lokales RStudio**:
+
+* Oben rechts im Menüreiter: "File > Open File..."
+* Datei auswählen
+
+oder
+
+* Im "Files" Fenster (normalerweise unten rechts) die Datei suchen
+* Klicken, um sie zu öffnen
+
+**Workbench (online)**
+
+* Im "Files" Fenster (normalerweise unten rechts) auf "Upload" klicken
+* Im "Target Directory" den gewünschten Ort auf dem Server auswählen, wo die Datei hochgeladen werden soll
+* Auf "Choose File" klicken und die Datei zum Hochladen auswählen
+* Auf "Okay" klicken
+* Die Datei taucht jetzt in "Files" dort auf, wo wir es mit "Target Directory" ausgewählt haben
+
+### Wichtige Einstellungen 
+
+* Im Menüreiter ganz oben unter "Tools > Global Options" das Einstellungsfenster öffnen
+* "Code > Saving > Default text encoding": UTF-8
+* "Code > Use native pipe operator, |>": Häkchen setzen
+* "General > Save workspace to .RData on exit": Never
+
+### RStudio Fenster anordnen
+
+* Im Menüreiter ganz oben unter "Tools > Global Options" das Einstellungsfenster öffnen
+* Unter "Pane Layout" die Fenster anordnen
+
+### Skript-Editor 
+
+Normalerweise liegt der Skript-Editor oben links, dort werden die R-Skripte geöffnet. In "Pane Layout" heißt der Editor "Source".
+
+* Hier kann man sowohl R Code als auch Kommentare (mit `#`) schreiben und speichern. 
+* Einzelnen R Code kann man ausführen lassen, indem man den Code auswählst und auf "Run" klickst oder die Tastenkombination **`Strg` + `Enter`** (Windows/Linux) bzw. **`Cmd` + `Enter`** (Mac) drückt.
+* Die Änderungen an den jeweiligen Dateien werden NIE automatisch gespeichert. Es ist daher sehr wichtig, Änderungen rechtzeitig zu speichern. Dafür gibt es mehrere Möglichkeiten. Im oberen Menüreiter: **"File > Save"** oder **"File > Save As"**. Der Unterschied ist: "Save" speichert die Datei genau dort, wo sie schon ist. "Save As" speichert die Datei an einer neuen Stelle.
+* Bei "Save" gibt es evtl. das Problem, dass das Skript neu erstellt wurde (dann heißt das Skript oft "Untitled") und bisher noch nie irgendwo gespeichert wurde. Dann muss es erst einmal mit "File > Save As" gespeichert werden. 
+* Manchmal liegen die Skripte gerade in einem Ordner, auf den man keinen Zugriff hat. Dann wird das Speichern verweigert. Dann muss man das Skript mit "File > Save As" an einer neuen Stelle speichern.
+

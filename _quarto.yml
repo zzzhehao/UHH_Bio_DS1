@@ -1,0 +1,40 @@
+project:
+  type: website
+
+author:
+  - name: 
+      given: Zhehao
+      family: Hu
+    email: zhehao.hu@senckenberg.de
+    url: https://zzzhehao.github.io
+    affiliations:
+      - name: Benthic Biogeography, German Centre for Marine Biodiversity Research (DZMB, SaM)
+        city: Hamburg
+        country: Germany
+        url: https://www.senckenberg.de/de/forschung/institute-uebersicht/sam-senckenberg-am-meer/dzmb/sam-dzmb-sekt-benthische-biogeographie/
+
+website:
+  title: UHH BSc Bio DSs1
+  navbar:
+    left:
+      - href: webpage/rstudio.qmd
+        text: RStudio kennenlernen
+      - text: Übungsstunde
+        menu:
+        - href: webpage/w6_1.qmd
+          text: DS1 Woche 6
+  page-footer:
+    right: "Written by Zhehao Hu. Source code available at github.com"
+
+format:
+  html:
+    # highlight-style: atom-one-dark
+    # theme: 
+    #   dark: [theme/dark.scss]
+    #   light: [theme/light.scss]
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+
+lightbox: true
+

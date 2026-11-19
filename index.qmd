@@ -1,0 +1,14 @@
+---
+title: "UHH BSc Bio DS1"
+listing:
+  contents:
+    - webpage/*.qmd
+  sort-ui: true
+  filter-ui: true
+  page-size: 10
+  field-display-names:
+    name: "Name"
+  type: table
+  sort: date
+---
+

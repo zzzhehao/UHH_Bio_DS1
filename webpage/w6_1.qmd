@@ -1,0 +1,388 @@
+---
+title: "Data Science 1 – Übungsskript Woche 6"
+subtitle: "Datensichtung und deskriptive Statistik"
+date: "2026-11-20"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: "Inhalt"
+    code-fold: false
+    code-tools: true
+    # df-print: paged
+    embed-resources: true
+execute:
+  echo: true
+  warning: true
+  message: true
+---
+
+::: {.callout-note collapse="true"} 
+## Lizenzhinweis
+Dieses Programm ist freie Software und kann unter den Bedingungen der GNU General Public License weitergegeben und/oder modifiziert werden.
+:::
+
+## Wie lese ich dieses Dokument?
+
+Dieses Dokument ist eine HTML Seite, die das Übungsskript Schritt für Schritt erklärt. Eine graue Box wie hier unten ist ein "Code Block", dort werden Abschnitte von R-Skripten und Lösungen gezeigt. Wenn die Funktionen aus einem Code Block etwas in der Konsole ausgeben oder einen Plot erstellen (also "Ergebnisse"), werden die Ergebnisse anschließend außerhalb des Code Blocks gezeigt. 
+
+```{r beispiel}
+# Hier ist ein Code-Block, hier wird der R Code gezeigt, genau so, wie er in einem Skript geschrieben oder in die Konsole gegeben werden soll.
+print("Ich bin die Ausgabe")
+```
+
+## Vorbereitung
+
+
+### Pakete laden und Optionen setzen
+
+```{r vorbereitung-pakete}
+#| error: true
+library(DSBtools)
+options(DSBtools.language = "de") # Ausgabe auf Deutsch
+```
+
+Mit `library()` aktivieren wir ein bereits installiertes Zusatzpaket für unsere aktuelle R-Session. Ohne `library(...)` kennt R die speziellen Funktionen dieses Pakets nicht. 
+
+Mit `options(...)` verändern wir globale Einstellungen (Optionen) von R bzw. eines Pakets. Hier setzen wir das Argument `DSBtools.language = "de"`, damit Ausgaben des Pakets `DSBtools` auf Deutsch erscheinen.
+
+Hier erwarten wir nichts von R in der Konsole. Manchmal werden jedoch zusätzliche Informationen oder Warnmeldungen angezeigt. 
+
+### Interne Datensätze
+
+In R gibt es verschiedene interne Datensätze, auf die man direkt zugreifen kann. Eine Übersicht gibt es mit folgendem Befehl:
+
+```{r vorbereitung-data-uebersicht, eval=FALSE}
+data()
+```
+
+Die Daten sind im Paket `datasets` enthalten. Da dieses automatisch beim Start von R geladen ist, sind die Daten sofort abrufbar. Andere Pakete, die man selbst lädt, können auch Datensätze enthalten und werden dann hier gelistet.
+
+Die Datensätze können einfach durch Eingabe des Namens aufgerufen und ausgegeben werden.
+
+```{r vorbereitung-iris-anzeigen}
+#| eval: false
+# Gibt den Datensatz iris direkt in der Konsole aus (ohne ihn extra als Objekt im Environment abzulegen)
+iris
+```
+
+```{r}
+rmarkdown::paged_table(iris)
+```
+
+Mit diesem Code wird der Datensatz `iris` komplett in der Konsole ausgegeben. Hier habe ich ihn in eine interaktive Tabelle umgewandelt, damit er nicht zu viel Platz einnimmt. Diese interaktive Tabelle kriegt ihr so nicht in RStudio (Pro / Workbench). 
+
+Mit der `data()` Funktion kann man aber jeden Datensatz eines installierten Pakets in die *Global Environment* laden:
+
+```{r vorbereitung-data-laden}
+# Das erste Argument benennt den Datensatz, das Argument 'package =' gibt an, aus welchem Paket er geladen werden soll.
+data("iris", package = "datasets")
+data("starwars", package = "dplyr")
+```
+
+Zu diesen Daten gibt es meist auch eine Dokumentation, die mit dem Fragezeichen aufgerufen werden kann. 
+
+```{r vorbereitung-hilfe, eval=FALSE}
+?starwars
+```
+
+Diese Funktion zeigt die Dokumentation zu diesem Datensatz im "Help" Fenster (normalerweise unten rechts). 
+
+## Teil A: Objekte sichten & indexieren
+
+In diesem Teil arbeiten wir mit dem eingebauten Datensatz `sleep`. **Indexieren** bedeutet in R, gezielt einzelne Elemente, Zeilen, Spalten oder Teilmengen aus einem Objekt herauszugreifen (auf Englisch "subset"). 
+
+### A1. Dokumentation zum Datensatz `sleep` lesen
+
+***Welche Informationen enthält der Datensatz? Lesen wir die Dokumentation.***
+
+```{r a1-hilfe, eval=FALSE}
+?sleep
+```
+
+### A2. Objekttyp, Klasse, Dimensionen, Namen und Struktur prüfen
+
+***Was ist der Objekttyp? Was ist die Klasse? Wie viele Dimensionen hat das Objekt? Haben die Dimensionen Namen? Welche Datentypen enthält `sleep`? Ist der Datensatz somit homogen oder heterogen?***
+
+Schauen wir uns jeden Befehl einzeln an:
+
+```{r a2-klasse}
+class(sleep)  # Welche Klasse hat das Objekt?
+```
+
+* `class(sleep)` liefert `"data.frame"`. Das ist in R die klassische Tabellenform: Spalten können unterschiedliche Datentypen haben und jede Spalte hat dieselbe Länge (Anzahl Zeilen).
+
+```{r a2-typ}
+typeof(sleep) 
+```
+
+* Tief in R werden "data.frame" jedoch als Liste gespeichert. Damit ist gemeint, dass "data.frame" eine spezielle Form von Liste ist und nur Vektoren mit derselben Länge enthält.
+* Wenn man dieses Konzept versteht, sind ein paar Verhaltensweisen von R einfacher nachzuvollziehen. Jedoch nutzen wir im Kurs kaum die Funktion `typeof()`.
+
+Nun prüfen wir Dimensionen und Namen:
+
+```{r a2-dimensionen-namen}
+dim(sleep)      # Gibt c(Anzahl_Zeilen, Anzahl_Spalten) zurück
+nrow(sleep)     # Nur die Anzahl der Zeilen
+ncol(sleep)     # Nur die Anzahl der Spalten
+dimnames(sleep) # Namen der Dimensionen (Zeilennamen und Spaltennamen als Liste)
+rownames(sleep) # Nur die Zeilennamen
+colnames(sleep) # Nur die Spaltennamen
+```
+
+Jetzt prüfen wir die Struktur und die Datentypen der einzelnen Spalten:
+
+```{r a2-struktur}
+str(sleep) # "structure" – zeigt kompakt Aufbau, Dimensionen, Spaltennamen, Datentypen und erste Werte
+```
+
+### A3. Einzelne Elemente extrahieren
+
+***Welchen Wert hat das Element in der 13. Zeile und 2. Spalte? Welchen Wert hat das 5. Element in der Spalte `ID`?***
+
+Bei zweidimensionalen Tabellen gilt in eckigen Klammern immer die Reihenfolge **`[Zeile, Spalte]`**. Mit `Objekt$Spaltenname` greifen wir direkt auf eine einzelne Spalte als Vektor zu.
+
+```{r a3-indexieren}
+sleep[13, 2] # Zeile 13, Spalte 2
+
+sleep$ID[5]  # 5. Wert aus der Spalte 'ID'
+```
+
+
+### A4. Teildatensätze erstellen (`sleep_sub` und `sleep_sub2`)
+
+***Erstellen wir einen Teildatensatz `sleep_sub`, welcher aus den letzten 5 Zeilen und allen Spalten besteht. Zu welchem Objekttyp gehört `sleep_sub`? Erstellen wir nun einen Teildatensatz `sleep_sub2`, welcher aus den Zeilen 1, 4, 5, 6 und 20 und nur der Spalte `extra` besteht. Zu welchem Objekttyp gehört `sleep_sub2`?***
+
+```{r a4-teildatensaetze}
+sleep_sub <- sleep[16:20, ] # row 16 to 20; all cols (nach dem Komma leer = alle Spalten)
+sleep_sub <- tail(sleep, n = 5) # last 5 rows (überschreibt sleep_sub mit demselben Ergebnis über tail())
+str(sleep_sub)
+class(sleep_sub)
+
+# Zeilen 1, 4, 5, 6 und 20 -> c(...) fasst Einzelwerte/Sequenzen zu einem Vektor zusammen.
+# Spalte "extra" als Namen angegeben:
+sleep_sub2 <- sleep[c(1, 4:6, 20), "extra"] # row 1, 4, 5, 6 (4 to 6), 20; col "extra"
+str(sleep_sub2)
+class(sleep_sub2)
+```
+
+**Zum Überlegen**: Warum hat `sleep_sub` die Klasse "data.frame", aber `sleep_sub2` die Klasse "numeric"?
+
+### A5. Logische Indexierung (Filtern nach Bedingung)
+
+***Filtern wir mit logischer Indexierung alle Zeilen, in denen sich die Schlafdauer verlängert hat (`extra > 0`). Bei wie vielen Beobachtungen ist das der Fall?***
+
+Bei der **logischen Indexierung** übergeben wir an der Zeilenposition einen Vektor aus `TRUE` und `FALSE`. R behält dann genau die Zeilen, an denen die Bedingung `TRUE` ergibt.
+
+```{r a5-filtern-bedingung}
+sleep[sleep$extra > 0, ] # all rows with value in "extra" greater than 0; all cols
+nrow(sleep[sleep$extra > 0, ]) # how many rows were retained?
+```
+
+### A6. Filtern nach Gruppe und Auswahl bestimmter Spalten
+
+***Filtern wir alle Zeilen der Gruppe 2 und nur die Spalten `extra` und `ID`.***
+
+`sleep$group == 2` prüft, ob die Werte aus der Spalte `group` gleich 2 sind. 
+
+```{r a6-filtern-gruppe-spalten}
+sleep[sleep$group == 2, c("extra", "ID")] # all rows with value in "group" equals to 2; col "extra" and "ID"
+```
+
+### A7. Neue Spalte anhängen
+
+***Die Spalte `extra` ist in Stunden angegeben. Hängen wir eine neue Spalte `extra_min` an `sleep` an, welche die Werte in Minuten enthält. ***
+
+```{r a7-neue-spalte}
+sleep$extra_min <- sleep$extra * 60 # convert "extra" in minute and define a new column
+sleep
+```
+
+Die Spalte `extra_min` existiert noch nicht, aber mit `<-` definieren wir die Spalte mit den umgerechneten Werten. 
+
+## Teil B: Deskriptive Statistik – rechnen und prüfen
+
+Wir bleiben beim `sleep`-Datensatz. Zuerst berechnen wir Kennwerte selbst mit Standardfunktionen (*built-in functions*) und prüfen sie anschließend mit Funktionen aus dem Paket `DSBtools`.
+
+### B1. Lage- und Streuungsmaße selbst berechnen
+
+***Berechnen wir für die Variable `extra` den Mittelwert, den Median, die Standardabweichung, das Minimum und das Maximum.***
+
+```{r b1-Kennzahlen}
+mean(sleep$extra)   # mean - Mittelwert (arithmetisches Mittel)
+median(sleep$extra) # Median 
+sd(sleep$extra)     # Standardabweichung 
+min(sleep$extra)    # Minimal
+max(sleep$extra)    # Maximal
+
+summary(sleep$extra) # Zusammenfassung. Hier werden alle oben genannten Werte bis auf die Standardabweichung gezeigt.
+```
+
+### B2. Mit `describe_var()` prüfen und nach Gruppen trennen
+
+***Prüfen wir unsere Ergebnisse aus B1 mit `describe_var()`. Stimmen die Werte überein?***
+
+Wir wollen auch erstmal wissen: Was macht diese Funktion? Woher kommt diese Funktion? 
+
+```{r b2-hilfe-describe, eval=FALSE}
+?describe_var() 
+```
+
+* Diese Funktion gibt eine Zusammenfassung von einer Variable und die deskriptiven Statistiken zurück.
+* `{DSBtools}` steht ganz oben neben describe_var, sie kommt also aus dem Paket "DSBtools".
+
+```{r b2-describe-var}
+#| error: true
+# Lass R die Variable `sleep$extra` beschreiben.
+describe_var(sleep$extra)
+```
+
+***Berechnen wir anschließend mit `describe_var()` die Statistiken von `extra` getrennt für die beiden Gruppen (Argument `by`) und speichern wir das Ergebnis unter dem Namen `sleep_stats`. Welcher Objekttyp ist `sleep_stats`? Schauen wir uns die Struktur an. Bei welchem Medikament verlängert sich der Schlaf im Mittel stärker?***
+
+Wir definieren eine neue Variable `sleep_stats` mit der ausgegebenen Statistik, getrennt nach den Gruppen in `sleep$group` über das Argument `by =`.
+
+```{r}
+sleep_stats <- describe_var(sleep$extra, by = sleep$group)
+```
+
+Was ist die Objektstruktur von `sleep_stats`? 
+
+```{r}
+str(sleep_stats) 
+```
+
+Das Objekt ist eine Liste, zwar etwas kompliziert, lass uns dann mal die Klasse anschauen.
+
+```{r}
+class(sleep_stats)
+```
+
+Hmm, `ds_description` kennen wir nicht. Das ist tatsächlich eine Klasse aus dem Paket `DSBtools`, die speziell dafür entwickelt wurde, um die deskriptive Statistik einer oder mehrerer Variablen anzuzeigen. 
+
+Schauen wir uns nun die Statistik an: Welches Medikament wirkt im Mittel stärker?
+
+```{r}
+sleep_stats
+```
+
+### B3. Gruppenunterschiede grafisch mit `explore_var()` darstellen
+
+***Lassen wir uns die Unterschiede zwischen den Gruppen mit `explore_var()` auch grafisch anzeigen. (Die Angaben zum 95%-Konfidenzintervall können wir vorerst ignorieren – dazu mehr in Data Science 2.)***
+
+Jetzt begegnen wir wieder eine neuen Funktion. Wie nutzt man diese Funktion?
+
+```{r b3-hilfe-explore, eval=FALSE}
+?explore_var 
+```
+
+* Es wird eine Grafik erstellt
+* `x` = Gruppenvariable (unabhängige/Gruppierungsvariable)
+* `y` = numerische Zielvariable ("extra")
+* `xlab` und `ylab` = Beschriftungen für die x-Achse und y-Achse
+
+```{r b3-explore-var}
+#| error: true
+explore_var(
+  x = sleep$group, y = sleep$extra,
+  xlab = "Medikament", ylab = "Zusätzlicher Schlaf (h)"
+)
+```
+
+Eine Grafik wie oben wird nun von dieser Funktion im **Plots-Fenster (unten rechts)** erstellt. Mit den Pfeilen im Plots-Fenster können wir zwischen den erstellten Plots hin- und herschalten (jetzt haben wir erstmal nur einen!).
+
+## Teil C: Welcher Variablentyp ist das?
+
+Hier kommt ein ganz wichtiger Punkt für die Praxis in R, im Skript steht:
+
+::: {.callout-note}
+
+* `explore_var()` erkennt den Typ einer Variable daran, wie sie in R gespeichert ist – nicht daran, was die Werte bedeuten:
+    * `character`, `logical`, `factor` $\rightarrow$ **nominal**
+    * geordneter Faktor (`ordered factor`) $\rightarrow$ **ordinal**
+    * `integer` $\rightarrow$ **diskret**
+    * `double` (`numeric`) $\rightarrow$ **kontinuierlich**
+* Ob das zur Bedeutung der Variable passt, müssen wir beurteilen!
+* Gehen Sie für jede der folgenden Variablen so vor:
+    1. Lesen Sie in der Dokumentation, was die Variable bedeutet, und schauen Sie sich mit str() an, wie sie gespeichert ist.
+    2. Notieren Sie, welchen Typ explore_var() erkennen wird und welcher Typ Ihrer Meinung nach zur Bedeutung der Variable passt.
+    3. Rufen Sie explore_var() auf und lesen Sie die Meldung in der Konsole.
+    4. Passt der erkannte Typ nicht, korrigieren Sie ihn mit dem Argument 'x_type' (mögliche Werte: "nominal", "ordinal", "discrete", "continuous") und begründen Sie Ihre Wahl in einem Satz.
+
+:::
+
+### C1. `InsectSprays$count`
+
+Wie sehen die Daten aus?
+
+```{r c1-hilfe}
+str(InsectSprays)
+```
+
+Die Variable `count` ist als "numeric" gespeichert, laut der Information oben wird der Datentyp `numeric` automatisch als "kontinuierlich" erkannt. Jetzt möchten wir aber auch wissen, welche Bedeutung die Variable hat. Wichtig ist, dass die Dokumentationen immer mit den Datensätzen gekoppelt sind, daher fragen wir hier nach der Dokumentation für den Datensatz statt für die einzelne Variable.
+
+```{r}
+?InsectSprays
+```
+
+Diese Variable bedeutet die Anzahl der Insekten (Insect count) und ist daher eine diskrete Variable (es gibt ja keine 3.14 oder 99.9 Tiere, es geht nur ganzzahlig). 
+
+```{r c1-pruefen}
+#| error: true
+explore_var(InsectSprays$count)
+```
+
+In der zurückgegebenen Information sehen wir auch, dass R die Variable automatisch als "kontinuierlich" erkannt hat, aber gleichzeitig auch angemerkt hat, dass die Variable diskret sein könnte. Jetzt geben wir das explizit an:
+
+```{r}
+explore_var(InsectSprays$count, x_type = "discrete")
+```
+
+### C2-3 `mtcars$am` und `airquality$Month`
+
+Nun gehen wir genauso weiter mit den beiden Variablen:
+
+1. Mit `str()` angucken, wie die Variablen gespeichert werden (welchen Datentyp haben die Variablen)?
+2. Mit `?` angucken, was bedeutet die Variable eigentlich?
+3. Stimmen die Datentypen?
+4. Wie sollen wir in `explore_var()` den Datentyp spezifizieren?
+
+## Hausaufgabe
+
+Fragen im Abschnitt "Optional" beantworten.
+
+```{r}
+################################################################################
+##########################  OPTIONAL (für zuhause)  ############################
+################################################################################
+
+# -------------------------------- crimtab -------------------------------------
+
+# O1. Welche Informationen enthält der Datensatz?
+
+# O2. Was ist die Klasse? Handelt es sich um eine Matrix? Um einen data frame?
+#     (TIPP: Schauen Sie sich die Funktionen is.matrix() und is.data.frame() an.
+#     Die Klasse 'table' ist eine spezielle Form einer Matrix bzw. eines Arrays.)
+#     Wie viele Dimensionen hat das Objekt? Haben die Dimensionen Namen?
+#     Welche Datentypen enthält 'crimtab'? Ist das Objekt homogen oder heterogen?
+
+# O3. Welchen Wert hat das Element in der 4. Zeile und 8. Spalte?
+
+# O4. Erstellen Sie einen Teildatensatz 'crimtab_sub', welcher aus den ersten
+#     10 Zeilen und den Spalten 2, 5 und 15 besteht. Zu welchem Objekttyp
+#     gehört crimtab_sub?
+#     Erstellen Sie einen Teildatensatz 'crimtab_sub2', welcher aus der
+#     15. Zeile und den Spalten 4-8 besteht. Zu welchem Objekttyp gehört
+#     crimtab_sub2?
+
+
+# ------------------------ Weitere Variablentypen ------------------------------
+
+# Gehen Sie wie in Teil C vor.
+
+# O5. esoph$agegp
+
+# O6. warpbreaks$tension
+
+# O7. airquality$Temp
+
+```
