@@ -7,8 +7,6 @@ format:
     toc: true
     toc-depth: 3
     toc-title: "Inhalt"
-    code-fold: false
-    code-tools: true
     # df-print: paged
     embed-resources: true
 execute:
@@ -24,7 +22,7 @@ Dieses Programm ist freie Software und kann unter den Bedingungen der GNU Genera
 
 ## Wie lese ich dieses Dokument?
 
-Dieses Dokument ist eine HTML Seite, die das Übungsskript Schritt für Schritt erklärt. Eine graue Box wie hier unten ist ein "Code Block", dort werden Abschnitte von R-Skripten und Lösungen gezeigt. Wenn die Funktionen aus einem Code Block etwas in der Konsole ausgeben oder einen Plot erstellen (also "Ergebnisse"), werden die Ergebnisse anschließend außerhalb des Code Blocks gezeigt. 
+Dieses Dokument ist eine HTML Seite, die das Übungsskript Schritt für Schritt erklärt. Eine schwarze Box wie hier unten ist ein "Code Block", dort werden R Funktionen als Lösungen für den Fragen gezeigt. Wenn die Funktionen aus einem Code Block etwas in der Konsole ausgeben oder einen Plot erstellen (also "Ergebnisse"), werden die Ergebnisse anschließend gezeigt. 
 
 ```{r beispiel}
 # Hier ist ein Code-Block, hier wird der R Code gezeigt, genau so, wie er in einem Skript geschrieben oder in die Konsole gegeben werden soll.
@@ -46,7 +44,7 @@ Mit `library()` aktivieren wir ein bereits installiertes Zusatzpaket für unsere
 
 Mit `options(...)` verändern wir globale Einstellungen (Optionen) von R bzw. eines Pakets. Hier setzen wir das Argument `DSBtools.language = "de"`, damit Ausgaben des Pakets `DSBtools` auf Deutsch erscheinen.
 
-Hier erwarten wir nichts von R in der Konsole. Manchmal werden jedoch zusätzliche Informationen oder Warnmeldungen angezeigt. 
+Hier erwarten wir nichts von R in der Konsole. Manchmal bei anderen Pakete werden jedoch zusätzliche Informationen oder Warnmeldungen angezeigt. 
 
 ### Interne Datensätze
 
@@ -67,6 +65,7 @@ iris
 ```
 
 ```{r}
+#| echo: false
 rmarkdown::paged_table(iris)
 ```
 

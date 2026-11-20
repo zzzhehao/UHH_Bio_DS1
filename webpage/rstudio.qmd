@@ -8,7 +8,6 @@ format:
     toc-depth: 3
     toc-title: "Inhalt"
     code-fold: false
-    code-tools: true
     df-print: paged
     embed-resources: true
 execute:
@@ -16,17 +15,6 @@ execute:
   warning: true
   message: true
 ---
-
-```{r setup, include=FALSE}
-# knitr- und rmarkdown-Optionen festlegen:
-# Hinweis: Quarto nutzt standardmäßig knitr zum Ausführen der R-Chunks.
-# Falls Sie klassisch mit rmarkdown::render() arbeiten, werden diese Optionen ebenfalls beachtet.
-# knitr::opts_chunk$set(
-#   echo = TRUE,       # R-Code im gerenderten Dokument anzeigen
-#   results = "markup",# Standard-Konsolenausgabe anzeigen
-#   comment = "#>"     # Präfix vor ausgegebenen Ergebnissen im Dokument
-# )
-```
 
 ::: {.callout-note collapse="true"} 
 ## Lizenzhinweis

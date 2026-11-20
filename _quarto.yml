@@ -23,8 +23,11 @@ website:
         menu:
         - href: webpage/w6_1.qmd
           text: DS1 Woche 6
+    search: true
+    background: transparent
   page-footer:
-    right: "Written by Zhehao Hu. Source code available at github.com"
+    left: "Written by [Zhehao Hu](https://zzzhehao.github.io/), built by [Quarto](https://quarto.org)."
+    right: "Source code available at [github.com](https://github.com/zzzhehao/UHH_Bio_DS1)"
 
 format:
   html:
@@ -32,9 +35,25 @@ format:
     # theme: 
     #   dark: [theme/dark.scss]
     #   light: [theme/light.scss]
-    toc: true
+    # toc: true
+    # code-copy: true
+    # code-overflow: wrap
+    theme: 
+      light: theme/light.scss
+      dark: theme/dark.scss
     code-copy: true
+    code-tools: false
     code-overflow: wrap
+    highlight-style: atom-one-dark
+    toc-depth: 3
+    mainfont: "Merriweather"
+    grid:
+      sidebar-width: 320px   # Wider left sidebar (default is 250px)
+      body-width: 820px      # Keeps article column width unchanged
+      margin-width: 280px    # Keeps right TOC/margin width unchanged
+      gutter-width: 1.5rem
 
 lightbox: true
 
+execute: 
+  freeze: auto
